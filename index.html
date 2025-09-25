@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Kredit Kalkulator - Izračunajte Rate Vašeg Kredita</title>
+    <meta name="description" content="Besplatni kalkulator auto kredita za izračunavanje mesečnih rata, ukupne kamate i troškova osiguranja vozila">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="header-title">Auto Kredit Kalkulator</h1>
+                <p class="header-subtitle">Izračunajte mesečne rate i ukupne troškove vašeg budućeg automobila</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Calculator Section -->
+    <main class="main">
+        <div class="container">
+            <div class="calculator-grid">
+                <!-- Input Section -->
+                <section class="input-section">
+                    <div class="section-header">
+                        <h2>Unesite Podatke</h2>
+                        <p>Popunite sve potrebne informacije za tačan izračun</p>
+                    </div>
+
+                    <div class="form-grid">
+                        <!-- Cena vozila -->
+                        <div class="form-group">
+                            <label for="vehiclePrice" class="form-label">
+                                <span class="label-text">Cena vozila (RSD)</span>
+                                <span class="label-info">(sa PDV-om)</span>
+                            </label>
+                            <div class="input-with-icon">
+                                <input type="number" id="vehiclePrice" class="form-input" 
+                                       placeholder="300.000" min="100000" step="1000" value="300000">
+                                <span class="input-icon">💰</span>
+                            </div>
+                            <div class="input-hint">Minimalno 100.000 RSD</div>
+                        </div>
+
+                        <!-- Učešće -->
+                        <div class="form-group">
+                            <label for="downPayment" class="form-label">
+                                <span class="label-text">Učešće (RSD)</span>
+                                <span class="label-info">(ili %)</span>
+                            </label>
+                            <div class="input-with-icon">
+                                <input type="number" id="downPayment" class="form-input" 
+                                       placeholder="60.000" min="0" step="1000" value="60000">
+                                <span class="input-icon">📊</span>
+                            </div>
+                            <div class="dual-input">
+                                <input type="range" id="downPaymentPercent" class="form-range" 
+                                       min="0" max="100" value="20" step="1">
+                                <span id="downPaymentPercentValue" class="range-value">20%</span>
+                            </div>
+                        </div>
+
+                        <!-- Rok otplate -->
+                        <div class="form-group">
+                            <label for="loanTerm" class="form-label">
+                                <span class="label-text">Rok otplate (meseci)</span>
+                                <span class="label-info">(1-84 meseca)</span>
+                            </label>
+                            <div class="input-with-icon">
+                                <input type="number" id="loanTerm" class="form-input" 
+                                       placeholder="60" min="12" max="84" value="60">
+                                <span class="input-icon">📅</span>
+                            </div>
+                            <div class="dual-input">
+                                <input type="range" id="loanTermRange" class="form-range" 
+                                       min="12" max="84" value="60" step="6">
+                                <span id="loanTermValue" class="range-value">5 godina</span>
+                            </div>
+                        </div>
+
+                        <!-- Kamatna stopa -->
+                        <div class="form-group">
+                            <label for="interestRate" class="form-label">
+                                <span class="label-text">Kamatna stopa (%)</span>
+                                <span class="label-info">(godišnja)</span>
+                            </label>
+                            <div class="input-with-icon">
+                                <input type="number" id="interestRate" class="form-input" 
+                                       placeholder="6.5" min="2" max="20" step="0.1" value="6.5">
+                                <span class="input-icon">📈</span>
+                            </div>
+                            <div class="input-hint">Prosečna stopa: 5-8%</div>
+                        </div>
+
+                        <!-- Dodatni troškovi -->
+                        <div class="form-group">
+                            <label for="additionalCosts" class="form-label">
+                                <span class="label-text">Dodatni troškovi (RSD)</span>
+                                <span class="label-info">(registracija, takse)</span>
+                            </label>
+                            <div class="input-with-icon">
+                                <input type="number" id="additionalCosts" class="form-input" 
+                                       placeholder="25.000" min="0" step="1000" value="25000">
+                                <span class="input-icon">💸</span>
+                            </div>
+                        </div>
+
+                        <!-- Tip osiguranja -->
+                        <div class="form-group">
+                            <label for="insuranceType" class="form-label">Tip osiguranja</label>
+                            <select id="insuranceType" class="form-select">
+                                <option value="kasko">Kasko osiguranje (1.5%)</option>
+                                <option value="obavezno" selected>Obavezno osiguranje (0.5%)</option>
+                                <option value="none">Bez osiguranja</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Control Buttons -->
+                    <div class="form-actions">
+                        <button type="button" id="calculateBtn" class="btn btn-primary">
+                            <span class="btn-icon">🧮</span>
+                            Izračunaj Rate
+                        </button>
+                        <button type="button" id="resetBtn" class="btn btn-secondary">
+                            <span class="btn-icon">🔄</span>
+                            Resetuj
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Results Section -->
+                <section class="results-section">
+                    <div class="section-header">
+                        <h2>Rezultati Kalkulacije</h2>
+                        <p>Detaljan pregled vaših budućih rata i troškova</p>
+                    </div>
+
+                    <div class="results-card" id="resultsCard">
+                        <div class="results-placeholder">
+                            <div class="placeholder-icon">🚗</div>
+                            <h3>Unesite podatke za izračun</h3>
+                            <p>Popunite formu levo da biste videli detaljne rezultate</p>
+                        </div>
+
+                        <!-- Main Results -->
+                        <div class="results-main" id="resultsMain" style="display: none;">
+                            <div class="result-highlight">
+                                <div class="highlight-item">
+                                    <span class="highlight-label">Mesečna rata</span>
+                                    <span class="highlight-value" id="monthlyPayment">-</span>
+                                </div>
+                                <div class="highlight-item">
+                                    <span class="highlight-label">Ukupna kamata</span>
+                                    <span class="highlight-value" id="totalInterest">-</span>
+                                </div>
+                                <div class="highlight-item">
+                                    <span class="highlight-label">Ukupno za otplatu</span>
+                                    <span class="highlight-value" id="totalAmount">-</span>
+                                </div>
+                            </div>
+
+                            <!-- Progress Visualization -->
+                            <div class="progress-visualization">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="principalProgress" style="width: 70%">
+                                        <span class="progress-label">Glavnica</span>
+                                    </div>
+                                    <div class="progress-fill interest" id="interestProgress" style="width: 30%">
+                                        <span class="progress-label">Kamata</span>
+                                    </div>
+                                </div>
+                                <div class="progress-legend">
+                                    <div class="legend-item">
+                                        <span class="legend-color principal"></span>
+                                        <span>Glavnica: <strong id="principalAmount">-</strong></span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color interest"></span>
+                                        <span>Kamata: <strong id="interestAmount">-</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Detailed Breakdown -->
+                            <div class="breakdown-grid">
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Iznos kredita</span>
+                                    <span class="breakdown-value" id="loanAmount">-</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Učešće</span>
+                                    <span class="breakdown-value" id="downPaymentResult">-</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Dodatni troškovi</span>
+                                    <span class="breakdown-value" id="additionalCostsResult">-</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Osiguranje (godišnje)</span>
+                                    <span class="breakdown-value" id="insuranceCost">-</span>
+                                </div>
+                                <div class="breakdown-item total">
+                                    <span class="breakdown-label">Ukupna investicija</span>
+                                    <span class="breakdown-value" id="totalInvestment">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Amortization Table -->
+                    <div class="amortization-section" id="amortizationSection" style="display: none;">
+                        <h3>Pregled otplate (prvih 12 meseci)</h3>
+                        <div class="table-container">
+                            <table class="amortization-table" id="amortizationTable">
+                                <thead>
+                                    <tr>
+                                        <th>Mesec</th>
+                                        <th>Rata</th>
+                                        <th>Kamata</th>
+                                        <th>Glavnica</th>
+                                        <th>Preostalo</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="amortizationBody">
+                                    <!-- JavaScript će popuniti -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Tips Section -->
+            <section class="tips-section">
+                <h2>Saveti za Auto Kredit</h2>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">🎯</div>
+                        <h3>Optimalno učešće</h3>
+                        <p>Preporučuje se učešće od 20-30% kako biste smanjili kamatu i olakšali odobrenje kredita.</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">⏱️</div>
+                        <h3>Rok otplate</h3>
+                        <p>Kraći rokovi (3-5 godina) imaju niže ukupne kamate, ali veće mesečne rate.</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">📋</div>
+                        <h3>Dokumentacija</h3>
+                        <p>Pripremite LK, potvrdu o primanjima, ugovor o kupoprodaji vozila i dokaz o učešću.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>Auto Kredit Kalkulator</h3>
+                    <p>Besplatan alat za planiranje kupovine vozila na kredit</p>
+                </div>
+                <div class="footer-disclaimer">
+                    <p><strong>Napomena:</strong> Ovo je informativni kalkulator. Stvarni uslovi kredita zavise od banke i vaše kreditne istorije.</p>
+                    <p>&copy; 2025 Auto Kredit Kalkulator. Sva prava zadržana. | <a href="https://github.com/nikoladev1/">Nikola Jovanović</> </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
